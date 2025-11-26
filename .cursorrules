@@ -1,0 +1,85 @@
+# Cursor Rules for Job Finder Project
+
+## Model Selection Strategy
+
+This project uses a multi-model approach to optimize quality and efficiency:
+
+### Model Assignments:
+- **Gemini 3**: UI/UX design, visual layouts, user experience, design decisions
+- **Opus 4.5**: Coding, backend logic, architecture, complex implementations, business logic
+- **GPT-5.1**: Debugging, error fixing, code review, troubleshooting, optimization
+
+### When to Use Each Model:
+
+**Use Gemini 3 when:**
+- Designing UI components and layouts
+- Creating color schemes and typography
+- Planning user flows and experiences
+- Making visual design decisions
+- Creating mockups or wireframes
+- User research and requirements
+
+**Use Opus 4.5 when:**
+- Writing code (frontend or backend)
+- Implementing features and functionality
+- Designing architecture and system structure
+- Complex problem solving
+- Business logic implementation
+- Database design
+- API development
+- Integration work
+
+**Use GPT-5.1 when:**
+- Debugging errors and bugs
+- Fixing code issues
+- Code review and refactoring
+- Performance optimization
+- Troubleshooting problems
+- Analyzing error logs
+- Security vulnerability fixes
+
+## Project Context
+
+**Project Name**: Job Finder Platform  
+**Type**: Web Application  
+**Purpose**: Platform for job seekers and employers to connect
+
+## Coding Standards
+
+- Use modern JavaScript/TypeScript best practices
+- Follow component-based architecture
+- Implement responsive design (mobile-first)
+- Ensure accessibility (WCAG 2.1 AA minimum)
+- Write clean, maintainable code
+- Include error handling and validation
+- Document complex logic
+
+## File Structure Preferences
+
+- Organize by feature/domain, not by file type
+- Keep components reusable and modular
+- Separate concerns (UI, logic, data)
+- Use consistent naming conventions
+
+## Communication Preferences
+
+- When requesting tasks, specify which model should be used
+- For multi-phase tasks, break them down by model assignment
+- Always mention if switching models mid-task
+- Document design decisions made with Gemini 3 for reference
+
+## Example Request Format
+
+```
+"Design the job listing card component using Gemini 3"
+"Implement the search functionality using Opus 4.5"
+"Debug the API error using GPT-5.1"
+```
+
+## Notes
+
+- Model switching must be done manually in Cursor's UI
+- This file serves as a reminder of model preferences
+- Adjust model assignments as needed based on project needs
+- Keep track of which model was used for each major decision
+
