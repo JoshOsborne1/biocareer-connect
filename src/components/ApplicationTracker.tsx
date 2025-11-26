@@ -1,3 +1,5 @@
+'use client';
+
 import { trackerCards, trackerColumns, type ApplicationStatus } from '@/data/tracker';
 import { Calendar, ExternalLink, MoreHorizontal } from 'lucide-react';
 import { useEffect, useMemo, useState, type ReactElement } from 'react';

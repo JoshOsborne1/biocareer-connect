@@ -1,3 +1,5 @@
+'use client';
+
 import { ProfileActionList, ProfileMetrics, ProfilePreferencesPanel, ProfileSkillsMatrix } from '@/components/ProfileInsights';
 import { ProfileUpload } from '@/components/ProfileUpload';
 import { profileActions as defaultActions, profileAttributes as defaultAttributes, profileMetrics as defaultMetrics, profilePreferences as defaultPreferences } from '@/data/profile';
