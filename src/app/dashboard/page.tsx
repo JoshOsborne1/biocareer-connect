@@ -4,7 +4,7 @@ import { JobCard } from '@/components/JobCard';
 import { FilterChip, ToggleChip } from '@/components/ui/Filters';
 import { opportunities } from '@/data/opportunities';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { Filter, Globe, GraduationCap, MapPin, Plane, Search } from 'lucide-react';
+import { Filter, Globe, GraduationCap, Plane, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 const workModes = ['all', 'onsite', 'hybrid', 'remote'] as const;
@@ -23,7 +23,6 @@ export default function DashboardPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const displayLocation = user?.location ?? 'Add location';
   const heroName = user?.name ?? 'there';
 
   const categories = useMemo(() => ['all', ...new Set(opportunities.map((job) => job.category))], []);
@@ -40,6 +39,11 @@ export default function DashboardPage(): JSX.Element {
       mastersOnly: String(mastersOnly),
       studentOnly: String(studentOnly),
     });
+
+    if (user?.location) {
+      params.set('postcode', user.location);
+      params.set('distance', '25');
+    }
 
     const fetchData = async (): Promise<void> => {
       setIsLoading(true);
@@ -66,29 +70,10 @@ export default function DashboardPage(): JSX.Element {
     fetchData();
 
     return () => controller.abort();
-  }, [mastersOnly, searchTerm, selectedCategory, selectedIndustry, studentOnly, visaOnly, workMode]);
+  }, [mastersOnly, searchTerm, selectedCategory, selectedIndustry, studentOnly, visaOnly, workMode, user?.location]);
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-16">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-teal-600 text-lg font-black text-white">B</div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">BioCareer</p>
-              <p className="text-sm font-semibold text-slate-900">Opportunity feed</p>
-            </div>
-          </div>
-          <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-500 sm:flex">
-            <MapPin className="h-4 w-4 text-slate-400" />
-            {displayLocation}
-            {user?.location ? <span className="text-slate-300">•</span> : null}
-            {user?.location ? 'Within 15 miles' : 'Tap profile to add location'}
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-6 pt-10">
+    <div className="mx-auto max-w-6xl px-6 pt-6 pb-16">
         <div className="mb-10 space-y-8">
           <div>
             <p className="text-sm font-semibold text-teal-600">
@@ -244,7 +229,6 @@ export default function DashboardPage(): JSX.Element {
             </div>
           </aside>
         </section>
-      </main>
     </div>
   );
 }

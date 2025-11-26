@@ -76,15 +76,15 @@ export default function ProfilePage(): JSX.Element {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-14">
-      <div className="mx-auto max-w-6xl px-6 space-y-12">
-        <header className="text-center">
+    <div className="mx-auto max-w-6xl px-6 pb-16">
+      <div className="space-y-12">
+        <header className="space-y-3 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.4em] text-teal-500">Profile onboarding</p>
-          <h1 className="mt-3 text-4xl font-bold text-slate-900">Upload your CV once. Match everywhere.</h1>
-          <p className="mt-3 text-base text-slate-600">
+          <h1 className="text-4xl font-bold text-slate-900">Upload your CV once. Match everywhere.</h1>
+          <p className="text-base text-slate-600">
             We parse your education, lab skills, and placements to build a reusable application profile across every opportunity.
           </p>
-          {error ? <p className="mt-3 text-sm text-rose-600">{error}</p> : null}
+          {error ? <p className="text-sm text-rose-600">{error}</p> : null}
         </header>
 
         <ProfileUpload />

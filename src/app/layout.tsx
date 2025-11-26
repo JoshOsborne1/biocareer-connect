@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import Providers from './providers';
+import HeaderBar from '@/components/HeaderBar';
 
 import './globals.css';
 
@@ -27,8 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}>
+        <Providers>
+          <HeaderBar />
+          <main className="min-h-screen pt-24">{children}</main>
+        </Providers>
       </body>
     </html>
   );

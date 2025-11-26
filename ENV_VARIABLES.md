@@ -2,53 +2,61 @@
 
 ## Current Status
 
-**No environment variables are required for initial deployment!**
+Live job search is powered by the Adzuna API. Set these variables locally and in Vercel:
 
-The app currently uses mock data, so you can deploy to Vercel without any configuration.
+```
+ADZUNA_APP_ID=your_app_id
+ADZUNA_APP_KEY=your_app_key
+ADZUNA_COUNTRY=gb
+```
 
-## Future Environment Variables
+### How to obtain Adzuna credentials
+1. Create an account at https://developer.adzuna.com/signup  
+2. Add a new application  
+3. Copy the `app_id` and `app_key` into `.env.local`  
+4. (Optional) change `ADZUNA_COUNTRY` to `us`, `au`, etc.
 
-When you're ready to add features, you'll need these:
+> Without these keys the API falls back to static mock data.
 
-### Database (Optional - for persistence)
+## Optional Variables for Future Features
+
+### Database (Persistence)
 
 ```
 DATABASE_URL=postgresql://user:password@host:5432/database
 ```
 
-**Providers to consider:**
-- **Supabase**: Free tier, easy setup
-- **Neon**: Free tier, serverless Postgres
-- **Vercel Postgres**: Integrated with Vercel
+Recommended providers:
+- Supabase (free tier, Postgres + auth)
+- Neon (serverless Postgres)
+- Vercel Postgres (native integration)
 
-### AI API Keys (Optional - for cover letter generation)
+### AI Assist (Cover letters, insights)
 
 ```
 GEMINI_API_KEY=your_google_ai_studio_key
 ANTHROPIC_API_KEY=your_anthropic_key
 ```
 
-**Where to get them:**
-- Gemini: https://aistudio.google.com/app/apikey
-- Anthropic: https://console.anthropic.com/
-
 ## Adding Variables in Vercel
 
-1. Go to Vercel Dashboard → Your Project
-2. Settings → Environment Variables
-3. Add each variable
+1. Vercel Dashboard → Your Project  
+2. Settings → Environment Variables  
+3. Add each variable (`ADZUNA_APP_ID`, `ADZUNA_APP_KEY`, etc.)  
 4. Redeploy
 
 ## Local Development
 
-Create `.env.local` file (never commit this):
+Create `.env.local` (never commit this):
 
 ```
-DATABASE_URL=...
-GEMINI_API_KEY=...
+ADZUNA_APP_ID=...
+ADZUNA_APP_KEY=...
+ADZUNA_COUNTRY=gb
 ```
 
-Add to `.gitignore` (already done):
+Add to `.gitignore` (already configured):
+
 ```
 .env*
 ```

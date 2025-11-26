@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Building2, CheckCircle, ChevronRight, Clock, FileText, Globe, MapPin, Sparkles, XCircle } from 'lucide-react';
+import { Building2, CheckCircle, ChevronRight, Clock, ExternalLink, FileText, Globe, MapPin, Sparkles, XCircle } from 'lucide-react';
 import type { ReactElement } from 'react';
 
 import type { JobOpportunity } from '@/data/opportunities';
@@ -61,6 +61,12 @@ export function JobCard({ job }: Props): ReactElement {
                 <Clock className="h-4 w-4" />
                 {job.postedAt}
               </span>
+              {typeof job.distanceKm === 'number' ? (
+                <span className="rounded-full border border-slate-200 bg-white/60 px-2 py-0.5 text-xs text-slate-500">
+                  {job.distanceKm.toFixed(1)} km away
+                </span>
+              ) : null}
+              {job.sourceName ? <span className="text-xs uppercase tracking-wider text-slate-400">via {job.sourceName}</span> : null}
             </div>
           </div>
 
@@ -119,13 +125,26 @@ export function JobCard({ job }: Props): ReactElement {
               View Summary
             </button>
           </div>
-          <Link
-            href={`/opportunities/${job.id}`}
-            className="flex items-center gap-1 text-sm font-semibold text-teal-600 transition-colors hover:text-teal-700"
-          >
-            Details
-            <ChevronRight className="h-4 w-4" />
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            {job.sourceUrl ? (
+              <a
+                href={job.sourceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1 text-sm font-semibold text-slate-500 transition-colors hover:text-teal-700"
+              >
+                View listing
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            ) : null}
+            <Link
+              href={`/opportunities/${job.id}`}
+              className="flex items-center gap-1 text-sm font-semibold text-teal-600 transition-colors hover:text-teal-700"
+            >
+              Details
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
     </div>
   );

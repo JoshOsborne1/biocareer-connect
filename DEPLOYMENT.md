@@ -82,15 +82,13 @@ vercel
 # - Override settings? No
 ```
 
-## Step 5: Environment Variables (If Needed)
-
-If you add database or API keys later:
+## Step 5: Environment Variables (Required for Live Jobs)
 
 1. Go to Vercel Dashboard → Your Project → Settings → Environment Variables
-2. Add variables:
-   - `DATABASE_URL` (if using a database)
-   - `GEMINI_API_KEY` (for AI features)
-   - `ANTHROPIC_API_KEY` (for cover letters)
+2. Add the Adzuna keys:
+   - `ADZUNA_APP_ID`
+   - `ADZUNA_APP_KEY`
+   - (Optional) `ADZUNA_COUNTRY` (default `gb`)
 3. Redeploy after adding variables
 
 ## Step 6: Custom Domain (Optional)

@@ -4,7 +4,7 @@ import { ApplicationTracker } from '@/components/ApplicationTracker';
 
 export default function TrackerPage(): JSX.Element {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="mx-auto max-w-6xl px-6 pb-16">
       <ApplicationTracker />
     </div>
   );

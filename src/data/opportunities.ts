@@ -8,6 +8,9 @@ export type JobOpportunity = {
   id: string;
   title: string;
   company: string;
+  sourceName?: string;
+  sourceUrl?: string;
+  distanceKm?: number;
   category: string;
   industries: string[];
   workMode: 'onsite' | 'hybrid' | 'remote';

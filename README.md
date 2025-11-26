@@ -4,7 +4,7 @@ An intelligent career platform designed to streamline job searches for students 
 
 ## Features
 
-- **Deep Search**: Multi-source opportunity aggregation with intelligent matching
+- **Live Deep Search**: Real-time job feed powered by the Adzuna API (with distance filtering)
 - **AI-Powered Profile**: CV parsing, skill extraction, and qualification tracking
 - **Smart Filtering**: Category, industry, work mode, visa sponsorship, and Master's sponsorship filters
 - **Application Tracker**: Kanban-style pipeline to manage opportunities from saved to interview
@@ -55,21 +55,33 @@ npm start
 │   │   ├── profile/      # Profile & CV upload
 │   │   └── tracker/      # Application pipeline
 │   ├── components/       # React components
-│   ├── data/            # Mock data (will migrate to DB)
-│   └── lib/             # Utilities
+│   ├── data/             # Fallback mock data
+│   └── lib/              # API clients, utilities
 ├── public/              # Static assets
 └── docs/               # Documentation
 ```
 
 ## API Routes
 
-- `GET /api/opportunities` - Search and filter opportunities
+- `GET /api/opportunities` - Searches Adzuna (falls back to mock data when API keys missing)
 - `GET /api/profile` - Fetch user profile data
 - `GET /api/tracker` - Get application pipeline state
 
 ## Deployment
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+### Environment Variables
+
+Create a `.env.local` file and set:
+
+```
+ADZUNA_APP_ID=your_app_id
+ADZUNA_APP_KEY=your_app_key
+ADZUNA_COUNTRY=gb
+```
+
+> Sign up for credentials at https://developer.adzuna.com/signup. Without these, the app uses static fallback jobs.
 
 ### Quick Deploy to Vercel
 
