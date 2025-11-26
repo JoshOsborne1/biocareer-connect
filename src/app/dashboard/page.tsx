@@ -3,12 +3,14 @@
 import { JobCard } from '@/components/JobCard';
 import { FilterChip, ToggleChip } from '@/components/ui/Filters';
 import { opportunities } from '@/data/opportunities';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import { Filter, Globe, GraduationCap, MapPin, Plane, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 const workModes = ['all', 'onsite', 'hybrid', 'remote'] as const;
 
 export default function DashboardPage(): JSX.Element {
+  const { user, isLoading: userLoading } = useUserProfile();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedIndustry, setSelectedIndustry] = useState('all');
@@ -21,8 +23,8 @@ export default function DashboardPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const location = 'SE1 7EH';
-  const radius = '15 miles';
+  const displayLocation = user?.location ?? 'Add location';
+  const heroName = user?.name ?? 'there';
 
   const categories = useMemo(() => ['all', ...new Set(opportunities.map((job) => job.category))], []);
   const industries = useMemo(() => ['all', ...new Set(opportunities.flatMap((job) => job.industries))], []);
@@ -79,9 +81,9 @@ export default function DashboardPage(): JSX.Element {
           </div>
           <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-500 sm:flex">
             <MapPin className="h-4 w-4 text-slate-400" />
-            {location}
-            <span className="text-slate-300">•</span>
-            {radius}
+            {displayLocation}
+            {user?.location ? <span className="text-slate-300">•</span> : null}
+            {user?.location ? 'Within 15 miles' : 'Tap profile to add location'}
           </div>
         </div>
       </header>
@@ -89,7 +91,9 @@ export default function DashboardPage(): JSX.Element {
       <main className="mx-auto max-w-6xl px-6 pt-10">
         <div className="mb-10 space-y-8">
           <div>
-            <p className="text-sm font-semibold text-teal-600">Welcome back, Jessica</p>
+            <p className="text-sm font-semibold text-teal-600">
+              {userLoading ? 'Loading your profile…' : `Welcome back, ${heroName}`}
+            </p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">{total} deep-search matches</h1>
             <p className="mt-2 text-sm text-slate-500">Toggle sponsorship and study filters to surface the right opportunities.</p>
           </div>
