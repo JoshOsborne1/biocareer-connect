@@ -1,3 +1,5 @@
+'use client';
+
 import { ApplicationTracker } from '@/components/ApplicationTracker';
 
 export default function TrackerPage(): JSX.Element {
