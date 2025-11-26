@@ -1,6 +1,7 @@
 'use client';
 
-import type { ProfileAction, ProfileAttribute, ProfileMetric, Preference } from '@/data/profile';
+import type { ProfileAttribute, ProfileMetric, Preference } from '@/data/profile';
+import type { ProfileAction } from '@/data/profile';
 import { CheckCircle2, Clock, Flame, Info } from 'lucide-react';
 import { useMemo, type ReactElement } from 'react';
 

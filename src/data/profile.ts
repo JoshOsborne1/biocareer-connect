@@ -19,6 +19,11 @@ export type Preference = {
   values: string[];
 };
 
+export type ProfileAction = {
+  title: string;
+  description: string;
+};
+
 export const profileMetrics: ProfileMetric[] = [
   {
     label: 'Match Coverage',
@@ -129,7 +134,7 @@ export const profilePreferences: Preference[] = [
   },
 ];
 
-export const profileActions = [
+export const profileActions: ProfileAction[] = [
   {
     title: 'Finish HCPC verification',
     description: 'Upload final supervisor references before 12 Dec to secure January registration window.',

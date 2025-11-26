@@ -19,7 +19,7 @@ export function ProfileUpload(): ReactElement {
     }, 1600);
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>): void => {
+  const handleDrop = (event: React.DragEvent<HTMLElement>): void => {
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files[0];
