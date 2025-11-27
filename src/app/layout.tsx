@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import Providers from './providers';
-import HeaderBar from '@/components/HeaderBar';
-
+import SiteHeader from '@/components/SiteHeader';
+import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 const geistSans = Geist({
@@ -17,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'BioCareer Connect',
-  description: 'AI-assisted job discovery for biomedical science graduates',
+  title: 'BioCareer Connect · Bristol Biomedical Pathways',
+  description: 'Curated biomedical science sponsorships, placements, and cover letter tools for Bristol students.',
 };
 
 export default function RootLayout({
@@ -27,12 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}>
-        <Providers>
-          <HeaderBar />
-          <main className="min-h-screen pt-24">{children}</main>
-        </Providers>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SiteHeader />
+          <main className="mx-auto min-h-screen max-w-6xl px-4 pb-16 pt-24 sm:px-6">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );
