@@ -11,6 +11,8 @@ import {
   Sparkles,
   FlaskConical,
   GraduationCap,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -166,7 +168,7 @@ const FALLBACK_FORENSIC: Opportunity[] = [
   },
 ];
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 3;
 
 type OpportunityCardProps = {
   item: Opportunity;
@@ -243,10 +245,52 @@ function OpportunityCard({ item, delay, applied, onToggleApplied }: OpportunityC
   );
 }
 
+function CompactPagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+  totalItems,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  totalItems: number;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-full bg-accent/50 px-2 py-1">
+      <span className="px-2 text-xs font-medium text-muted-foreground">{totalItems} active</span>
+      {totalPages > 1 && (
+        <div className="flex items-center border-l border-border pl-2">
+          <button
+            onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="rounded-md p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </button>
+          <span className="w-8 text-center text-[10px] font-medium text-muted-foreground">
+            {currentPage}/{totalPages}
+          </span>
+          <button
+            onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="rounded-md p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30"
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Home(): JSX.Element {
   const [query, setQuery] = useState('');
-  const [bioVisibleCount, setBioVisibleCount] = useState(PAGE_SIZE);
-  const [forensicVisibleCount, setForensicVisibleCount] = useState(PAGE_SIZE);
+  
+  // Separate page states for active views
+  const [bioPage, setBioPage] = useState(1);
+  const [forensicPage, setForensicPage] = useState(1);
+  
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [view, setView] = useState<'active' | 'applied'>('active');
   const [biomedicalData, setBiomedicalData] = useState<Opportunity[]>(FALLBACK_BIOMEDICAL);
@@ -311,22 +355,15 @@ export default function Home(): JSX.Element {
     return forensicData.filter((item) => [item.title, item.summary, item.source, item.badge, ...item.tags].join(' ').toLowerCase().includes(q));
   }, [query, forensicData]);
 
-  const sortByApplied = (items: Opportunity[]): Opportunity[] =>
-    [...items].sort((a, b) => {
-      const aApplied = appliedIds.includes(a.id);
-      const bApplied = appliedIds.includes(b.id);
-      if (aApplied === bApplied) return 0;
-      return aApplied ? 1 : -1;
-    });
-
-  const visibleBio = sortByApplied(filteredBio).slice(0, bioVisibleCount);
-  const visibleForensic = sortByApplied(filteredForensic).slice(0, forensicVisibleCount);
-
   const appliedBio = biomedicalData.filter((item) => appliedIds.includes(item.id));
   const appliedForensic = forensicData.filter((item) => appliedIds.includes(item.id));
 
-  const canShowMoreBio = filteredBio.length > bioVisibleCount;
-  const canShowMoreForensic = filteredForensic.length > forensicVisibleCount;
+  // Pagination Logic
+  const bioTotalPages = Math.ceil(filteredBio.length / PAGE_SIZE);
+  const forensicTotalPages = Math.ceil(filteredForensic.length / PAGE_SIZE);
+
+  const visibleBio = filteredBio.slice((bioPage - 1) * PAGE_SIZE, bioPage * PAGE_SIZE);
+  const visibleForensic = filteredForensic.slice((forensicPage - 1) * PAGE_SIZE, forensicPage * PAGE_SIZE);
 
   const newOpportunities = useMemo(() => {
     const combined = [...biomedicalData, ...forensicData];
@@ -341,8 +378,8 @@ export default function Home(): JSX.Element {
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    setBioVisibleCount(PAGE_SIZE);
-    setForensicVisibleCount(PAGE_SIZE);
+    setBioPage(1);
+    setForensicPage(1);
   };
 
   const toggleApplied = (id: string): void => {
@@ -441,18 +478,30 @@ export default function Home(): JSX.Element {
         </button>
       </div>
 
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-8">
-        <section className="space-y-6">
+      <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-start">
+        {/* Biomedical Column */}
+        <section className="flex flex-col gap-6">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
               <div className="h-8 w-1 rounded-full bg-gradient-to-b from-primary to-transparent" />
               <h2 className="text-xl font-bold text-foreground">Biomedical</h2>
             </div>
-            <span className="rounded-full bg-accent px-2 py-1 text-xs font-medium text-muted-foreground">{filteredBio.length} active</span>
+            
+            {view === 'active' && (
+              <CompactPagination 
+                currentPage={bioPage} 
+                totalPages={bioTotalPages} 
+                onPageChange={setBioPage} 
+                totalItems={filteredBio.length} 
+              />
+            )}
+            {view !== 'active' && (
+              <span className="rounded-full bg-accent px-2 py-1 text-xs font-medium text-muted-foreground">{appliedBio.length} applied</span>
+            )}
           </div>
 
           {view === 'active' ? (
-            <div className="grid gap-4">
+            <div className="grid gap-4 min-h-[400px]">
               {visibleBio.map((item, index) => (
                 <OpportunityCard key={item.id} item={item} delay={index * 100} applied={appliedIds.includes(item.id)} onToggleApplied={toggleApplied} />
               ))}
@@ -463,7 +512,7 @@ export default function Home(): JSX.Element {
               )}
             </div>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid gap-4 min-h-[400px]">
               {appliedBio.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-border p-8 text-center">
                   <p className="text-sm text-muted-foreground">No applied biomedical roles yet.</p>
@@ -475,28 +524,42 @@ export default function Home(): JSX.Element {
               )}
             </div>
           )}
-
-          {view === 'active' && canShowMoreBio && (
-            <button
-              onClick={() => setBioVisibleCount((count) => Math.min(count + PAGE_SIZE, filteredBio.length))}
-              className="w-full rounded-xl border border-border bg-background/50 py-3 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            >
-              Load more biomedical roles
-            </button>
+          
+          {view === 'active' && bioTotalPages > 1 && (
+            <div className="flex justify-center pt-2">
+               <CompactPagination 
+                currentPage={bioPage} 
+                totalPages={bioTotalPages} 
+                onPageChange={setBioPage} 
+                totalItems={filteredBio.length} 
+              />
+            </div>
           )}
         </section>
 
-        <section className="space-y-6">
+        {/* Forensic Column */}
+        <section className="flex flex-col gap-6">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
               <div className="h-8 w-1 rounded-full bg-gradient-to-b from-teal-500 to-transparent" />
               <h2 className="text-xl font-bold text-foreground">Forensics</h2>
             </div>
-            <span className="rounded-full bg-accent px-2 py-1 text-xs font-medium text-muted-foreground">{filteredForensic.length} active</span>
+            
+            {view === 'active' && (
+              <CompactPagination 
+                currentPage={forensicPage} 
+                totalPages={forensicTotalPages} 
+                onPageChange={setForensicPage} 
+                totalItems={filteredForensic.length} 
+              />
+            )}
+             {view !== 'active' && (
+              <span className="rounded-full bg-accent px-2 py-1 text-xs font-medium text-muted-foreground">{appliedForensic.length} applied</span>
+            )}
           </div>
 
           {view === 'active' ? (
-            <div className="grid gap-4">
+            <div className="grid gap-4 min-h-[400px]">
               {visibleForensic.map((item, index) => (
                 <OpportunityCard key={item.id} item={item} delay={index * 100 + 200} applied={appliedIds.includes(item.id)} onToggleApplied={toggleApplied} />
               ))}
@@ -507,7 +570,7 @@ export default function Home(): JSX.Element {
               )}
             </div>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid gap-4 min-h-[400px]">
               {appliedForensic.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-border p-8 text-center">
                   <p className="text-sm text-muted-foreground">No applied forensic roles yet.</p>
@@ -520,17 +583,18 @@ export default function Home(): JSX.Element {
             </div>
           )}
 
-          {view === 'active' && canShowMoreForensic && (
-            <button
-              onClick={() => setForensicVisibleCount((count) => Math.min(count + PAGE_SIZE, filteredForensic.length))}
-              className="w-full rounded-xl border border-border bg-background/50 py-3 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            >
-              Load more forensic roles
-            </button>
+          {view === 'active' && forensicTotalPages > 1 && (
+             <div className="flex justify-center pt-2">
+               <CompactPagination 
+                currentPage={forensicPage} 
+                totalPages={forensicTotalPages} 
+                onPageChange={setForensicPage} 
+                totalItems={filteredForensic.length} 
+              />
+            </div>
           )}
         </section>
       </div>
     </div>
   );
 }
-

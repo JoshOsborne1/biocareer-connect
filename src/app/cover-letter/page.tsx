@@ -79,14 +79,14 @@ export default function CoverLetterPage(): JSX.Element {
   return (
     <div className="pt-24 pb-20 space-y-10 animate-fade-in">
       <section className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-600">
+        <div className="inline-flex items-center gap-2 rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700 dark:border-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
           <Sparkles className="h-3 w-3" />
           <span>AI-Powered Writer</span>
         </div>
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+        <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
           Craft your perfect application.
         </h1>
-        <p className="text-lg text-slate-600">
+        <p className="text-lg text-muted-foreground">
           Paste your CV and a job description. We&apos;ll blend them into a professional cover letter tailored for Bristol&apos;s biomedical sector.
         </p>
       </section>
@@ -94,10 +94,10 @@ export default function CoverLetterPage(): JSX.Element {
       <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-2">
         {/* Left Column: Inputs */}
         <div className="space-y-6">
-          <div className="glass-card rounded-3xl p-6 shadow-sm space-y-4 transition-all focus-within:ring-2 focus-within:ring-teal-100">
+          <div className="glass-card rounded-3xl p-6 shadow-sm space-y-4 transition-all focus-within:ring-2 focus-within:ring-primary/20">
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <FileText className="h-4 w-4 text-teal-500" />
+              <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                <FileText className="h-4 w-4 text-primary" />
                 Your Experience (CV)
               </label>
               <div className="relative">
@@ -110,7 +110,7 @@ export default function CoverLetterPage(): JSX.Element {
                 />
                 <label
                   htmlFor="cv-upload"
-                  className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-200"
+                  className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-accent/80"
                 >
                   <Upload className="h-3 w-3" />
                   {cvFileName ? 'Change File' : 'Upload File'}
@@ -119,7 +119,7 @@ export default function CoverLetterPage(): JSX.Element {
             </div>
             
             {cvFileName && (
-              <div className="flex items-center gap-2 rounded-lg border border-teal-100 bg-teal-50/50 px-3 py-2 text-xs text-teal-700">
+              <div className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-xs text-primary">
                 <Check className="h-3 w-3" />
                 Loaded: {cvFileName}
               </div>
@@ -129,27 +129,27 @@ export default function CoverLetterPage(): JSX.Element {
               value={cvText}
               onChange={(event) => setCvText(event.target.value)}
               placeholder="Paste your CV highlights, skills, and placements here..."
-              className="min-h-[200px] w-full resize-none rounded-xl border border-slate-200 bg-white/50 p-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-teal-500 focus:outline-none focus:ring-0"
+              className="min-h-[200px] w-full resize-none rounded-xl border border-border bg-background p-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-0"
             />
           </div>
 
-          <div className="glass-card rounded-3xl p-6 shadow-sm space-y-4 transition-all focus-within:ring-2 focus-within:ring-teal-100">
-            <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <Briefcase className="h-4 w-4 text-teal-500" />
+          <div className="glass-card rounded-3xl p-6 shadow-sm space-y-4 transition-all focus-within:ring-2 focus-within:ring-primary/20">
+            <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Briefcase className="h-4 w-4 text-primary" />
               Target Job Description
             </label>
             <textarea
               value={jobDescription}
               onChange={(event) => setJobDescription(event.target.value)}
               placeholder="Paste the job requirements and responsibilities here..."
-              className="min-h-[200px] w-full resize-none rounded-xl border border-slate-200 bg-white/50 p-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-teal-500 focus:outline-none focus:ring-0"
+              className="min-h-[200px] w-full resize-none rounded-xl border border-border bg-background p-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-0"
             />
           </div>
 
           <button
             type="submit"
             disabled={isGenerating}
-            className="group w-full rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-teal-200 transition-all hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+            className="group w-full rounded-2xl bg-gradient-to-r from-primary to-teal-600 px-6 py-4 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <span className="flex items-center justify-center gap-2">
               {isGenerating ? (
@@ -170,17 +170,17 @@ export default function CoverLetterPage(): JSX.Element {
         {/* Right Column: Preview */}
         <div className="lg:sticky lg:top-32 h-fit">
           <div className={cn(
-            "relative min-h-[600px] rounded-3xl border border-slate-200 bg-white p-8 shadow-xl transition-all duration-500",
-            letter ? "opacity-100 translate-y-0" : "opacity-50 translate-y-4 bg-slate-50"
+            "relative min-h-[600px] rounded-3xl border border-border bg-card p-8 shadow-xl transition-all duration-500",
+            letter ? "opacity-100 translate-y-0" : "opacity-50 translate-y-4"
           )}>
             <div className="flex items-center justify-between mb-6">
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Draft Preview
               </span>
               {letter && (
                 <button
                   onClick={handleCopy}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-accent"
                 >
                   {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
                   {copied ? 'Copied!' : 'Copy Text'}
@@ -189,15 +189,15 @@ export default function CoverLetterPage(): JSX.Element {
             </div>
 
             {letter ? (
-              <div className="prose prose-sm prose-slate max-w-none font-medium leading-relaxed text-slate-800 animate-fade-in whitespace-pre-wrap">
+              <div className="prose prose-sm prose-slate dark:prose-invert max-w-none font-medium leading-relaxed text-foreground animate-fade-in whitespace-pre-wrap">
                 {letter}
               </div>
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <div className="mb-4 rounded-full bg-slate-100 p-4">
-                  <FileText className="h-8 w-8 text-slate-300" />
+                <div className="mb-4 rounded-full bg-accent p-4">
+                  <FileText className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-muted-foreground">
                   Your generated letter will appear here ready for review.
                 </p>
               </div>
